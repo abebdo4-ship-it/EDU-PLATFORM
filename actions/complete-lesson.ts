@@ -14,18 +14,11 @@ export async function completeLesson(courseId: string, lessonId: string) {
     }
 
     try {
-        // 1. Mark lesson as complete
-        const { error: progressError } = await supabase
-            .from('lesson_progress')
-            .upsert({
-                user_id: user.id,
-                lesson_id: lessonId,
-                completed: true,
-                completed_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-            }, {
-                onConflict: 'user_id, lesson_id'
-            })
+        // 1. Mark lesson as complete and grant XP via RPC
+        const { error: progressError } = await supabase.rpc('record_lesson_completion', {
+            p_user: user.id,
+            p_lesson: lessonId,
+        })
 
         if (progressError) throw progressError
 

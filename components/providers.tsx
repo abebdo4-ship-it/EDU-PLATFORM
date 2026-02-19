@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
+import { useFavoritesStore } from '@/stores/useFavoritesStore'
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -13,6 +14,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
             },
         },
     }))
+
+    const { fetchFavorites, isLoaded } = useFavoritesStore()
+
+    React.useEffect(() => {
+        if (!isLoaded) {
+            fetchFavorites()
+        }
+    }, [isLoaded, fetchFavorites])
+
 
     return (
         <QueryClientProvider client={queryClient}>

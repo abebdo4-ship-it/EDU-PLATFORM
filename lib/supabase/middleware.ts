@@ -39,7 +39,27 @@ export async function updateSession(request: NextRequest) {
     )
 
     // refresh session if expired - required for Server Components
-    await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (user) {
+        // Enforce onboarding
+        const isOnboardingRoute = request.nextUrl.pathname.startsWith('/onboarding')
+
+        // Define protected routes that require onboarding
+        const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard') ||
+            request.nextUrl.pathname.startsWith('/courses') ||
+            request.nextUrl.pathname.startsWith('/messages') ||
+            request.nextUrl.pathname.startsWith('/social')
+
+        if (isProtectedRoute && !isOnboardingRoute) {
+            const hasOnboarded = request.cookies.has('onboarding_complete')
+            if (!hasOnboarded) {
+                const redirectUrl = request.nextUrl.clone()
+                redirectUrl.pathname = '/onboarding'
+                return NextResponse.redirect(redirectUrl)
+            }
+        }
+    }
 
     return supabaseResponse
 }

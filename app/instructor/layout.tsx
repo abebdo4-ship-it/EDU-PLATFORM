@@ -2,12 +2,31 @@ export const dynamic = 'force-dynamic'
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { InstructorSidebar } from "@/components/instructor/instructor-sidebar"
+import { createClient } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
 
-export default function InstructorLayout({
+export default async function InstructorLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+        return redirect("/")
+    }
+
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single()
+
+    if (profile?.role !== 'instructor' && profile?.role !== 'admin') {
+        return redirect("/dashboard")
+    }
+
     return (
         <SidebarProvider>
             <InstructorSidebar />

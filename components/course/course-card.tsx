@@ -6,7 +6,7 @@ import { BookOpen } from "lucide-react";
 
 import { IconBadge } from "@/components/icon-badge";
 import { formatPrice } from "@/lib/format"; // Need to create this utility or inline it
-
+import { FavoriteButton } from "@/components/course/favorite-button";
 
 interface CourseCardProps {
     id: string;
@@ -31,6 +31,9 @@ export const CourseCard = ({
         <Link href={`/courses/${id}`}>
             <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full bg-white dark:bg-slate-950">
                 <div className="relative w-full aspect-video rounded-md overflow-hidden">
+                    <div className="absolute top-2 right-2 z-10">
+                        <FavoriteButton courseId={id} />
+                    </div>
                     {imageUrl ? (
                         <img
                             src={imageUrl}
