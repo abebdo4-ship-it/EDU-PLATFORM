@@ -1,5 +1,4 @@
-﻿export const dynamic = 'force-dynamic'
-'use client'
+﻿'use client'
 
 import { createClient } from "@/lib/supabase/client"
 import { useQuery } from "@tanstack/react-query"
