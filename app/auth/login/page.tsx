@@ -2,6 +2,8 @@ import { Suspense } from 'react'
 import { LoginForm } from '@/components/auth/login-form'
 import { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
     title: 'Login | Antigravity',
     description: 'Sign in to your account',
