@@ -1,0 +1,12 @@
+NEXT_PUBLIC_SUPABASE_URL=https://placeholder.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=placeholder_anon_key
+SUPABASE_SERVICE_ROLE_KEY=placeholder_service_role_key
+GOOGLE_GENERATIVE_AI_API_KEY=placeholder_gemini_key
+NEXT_PUBLIC_APP_URL=https://your-project.vercel.app
+STRIPE_SECRET_KEY=sk_test_placeholder
+
+# INSTRUCTIONS:
+# 1. Copy the content above.
+# 2. Go to Vercel Dashboard -> Settings -> Environment Variables.
+# 3. Paste them.
+# 4. IMPORTANT: Replace the "placeholder" values with your ACTUAL API keys from Supabase, Google AI Studio, and Stripe.

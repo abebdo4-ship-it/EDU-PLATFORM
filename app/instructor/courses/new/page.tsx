@@ -1,3 +1,4 @@
+﻿export const dynamic = 'force-dynamic'
 'use client'
 
 import * as React from 'react'
@@ -114,3 +115,4 @@ export default function CreateCoursePage() {
         </div>
     )
 }
+

@@ -1,3 +1,4 @@
+﻿export const dynamic = 'force-dynamic'
 'use client'
 
 import { createClient } from "@/lib/supabase/client"
@@ -126,3 +127,4 @@ export default function CoursesPage() {
         </div>
     )
 }
+

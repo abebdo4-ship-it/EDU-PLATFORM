@@ -1,3 +1,4 @@
+﻿export const dynamic = 'force-dynamic'
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { StreakCard } from "@/components/dashboard/streak-card"
 import { Metadata } from 'next'
@@ -32,3 +33,4 @@ export default function DashboardPage() {
         </div>
     )
 }
+

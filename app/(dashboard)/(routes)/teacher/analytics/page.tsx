@@ -1,3 +1,4 @@
+﻿export const dynamic = 'force-dynamic'
 import { redirect } from "next/navigation";
 
 import { getAnalytics } from "@/actions/analytics";
@@ -40,3 +41,4 @@ const AnalyticsPage = async () => {
 }
 
 export default AnalyticsPage;
+

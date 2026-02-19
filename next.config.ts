@@ -10,7 +10,11 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Force all pages to be server-rendered (no static prerendering)
+  // This is required because NEXT_PUBLIC_ vars are not available during build on Vercel
+  experimental: {
+    serverComponentsExternalPackages: ['@supabase/ssr'],
+  },
 };
 
 export default withPWA(nextConfig);
