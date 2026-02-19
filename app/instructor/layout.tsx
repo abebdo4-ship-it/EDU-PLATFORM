@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { InstructorSidebar } from "@/components/instructor/instructor-sidebar"
 
