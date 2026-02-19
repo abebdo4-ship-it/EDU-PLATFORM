@@ -1,3 +1,5 @@
+﻿export const dynamic = 'force-dynamic'
+
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { CourseSidebar } from "@/components/course/course-sidebar";

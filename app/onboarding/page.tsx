@@ -1,3 +1,5 @@
+﻿export const dynamic = 'force-dynamic'
+
 import { OnboardingWizard } from '@/components/onboarding/wizard'
 import { Metadata } from 'next'
 

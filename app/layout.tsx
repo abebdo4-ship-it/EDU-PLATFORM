@@ -1,3 +1,5 @@
+﻿export const dynamic = 'force-dynamic'
+
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from 'react-hot-toast';

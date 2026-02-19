@@ -1,3 +1,5 @@
+﻿export const dynamic = 'force-dynamic'
+
 import { getCertificate } from "@/actions/certificates";
 import { Copy, MapPin, CheckCircle, XCircle } from "lucide-react";
 import Image from "next/image";
