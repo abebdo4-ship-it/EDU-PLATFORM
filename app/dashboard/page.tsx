@@ -1,6 +1,9 @@
 ﻿export const dynamic = 'force-dynamic'
+
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { StreakCard } from "@/components/dashboard/streak-card"
+import { EnrolledCourseList } from "@/components/dashboard/enrolled-course-list"
+import { RecentActivity } from "@/components/dashboard/recent-activity"
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,27 +13,20 @@ export const metadata: Metadata = {
 
 export default function DashboardPage() {
     return (
-        <div className="space-y-4">
+        <div className="space-y-6 p-6">
             <DashboardHeader />
             <StreakCard />
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 mt-8">
-                <div className="col-span-4">
-                    <h3 className="text-lg font-medium mb-4">Continue Learning</h3>
-                    {/* Needs Course List Component */}
-                    <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-8 text-center text-muted-foreground">
-                        <p>You haven't enrolled in any courses yet.</p>
-                        {/* Add 'Browse Courses' button */}
-                    </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+                <div className="lg:col-span-4 space-y-3">
+                    <h3 className="text-lg font-semibold tracking-tight">Continue Learning</h3>
+                    <EnrolledCourseList />
                 </div>
-                <div className="col-span-3">
-                    <h3 className="text-lg font-medium mb-4">Recent Activity</h3>
-                    <div className="rounded-xl border bg-card text-card-foreground shadow-sm h-[300px] flex items-center justify-center">
-                        <p className="text-muted-foreground">No recent activity</p>
-                    </div>
+                <div className="lg:col-span-3 space-y-3">
+                    <h3 className="text-lg font-semibold tracking-tight">Recent Activity</h3>
+                    <RecentActivity />
                 </div>
             </div>
         </div>
     )
 }
-
