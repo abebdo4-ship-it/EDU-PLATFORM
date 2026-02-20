@@ -3,11 +3,15 @@ import { cookies } from 'next/headers'
 
 export async function createClient() {
     const cookieStore = await cookies()
+    const allCookies = cookieStore.getAll()
+    console.log('[createClient.server] Total cookies:', allCookies.length)
+    console.log('[createClient.server] Cookie names:', allCookies.map(c => c.name).join(', '))
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
     if (!supabaseUrl || !supabaseAnonKey) {
+        console.warn('[createClient.server] Missing env vars! URL:', !!supabaseUrl, 'Key:', !!supabaseAnonKey)
         console.warn('Supabase env vars missing in server component - returning null client')
         // Return a dummy client that throws or logs on usage, or just null?
         // Returning null might break components expecting a client.

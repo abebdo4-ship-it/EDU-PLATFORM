@@ -12,6 +12,7 @@ import { LessonTitleForm } from "@/components/instructor/lesson-editor/lesson-ti
 import { LessonDescriptionForm } from "@/components/instructor/lesson-editor/lesson-description-form"
 import { LessonAccessForm } from "@/components/instructor/lesson-editor/lesson-access-form"
 import { LessonVideoForm } from "@/components/instructor/lesson-editor/lesson-video-form"
+import { LessonAttachmentForm } from "@/components/instructor/lesson-editor/lesson-attachment-form"
 import { QuizEditor } from "@/components/instructor/quiz-editor/quiz-editor"
 
 interface LessonIdPageProps {
@@ -146,6 +147,13 @@ export default function LessonIdPage({ params }: LessonIdPageProps) {
                         courseId={courseId}
                         lessonId={lessonId}
                     />
+                    <div className="mt-6 border-t pt-6 border-slate-200 dark:border-slate-800">
+                        <LessonAttachmentForm
+                            initialData={lesson}
+                            courseId={courseId}
+                            lessonId={lessonId}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

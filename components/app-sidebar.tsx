@@ -60,9 +60,19 @@ const navMain = [
                 icon: Home,
             },
             {
+                title: "Browse Courses",
+                url: "/search",
+                icon: Map,
+            },
+            {
                 title: "My Courses",
-                url: "/courses/my",
+                url: "/dashboard",
                 icon: School,
+            },
+            {
+                title: "Certificates",
+                url: "/certificates",
+                icon: SquareTerminal,
             },
             {
                 title: "Favorites",

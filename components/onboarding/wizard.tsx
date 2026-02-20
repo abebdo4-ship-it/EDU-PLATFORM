@@ -10,18 +10,18 @@ import { toast } from "react-hot-toast"
 import { Sparkles, ArrowRight, ArrowLeft, Loader2, Code, Laptop, Paintbrush, Database, BrainCircuit, Rocket } from "lucide-react"
 
 const EXPERIENCE_LEVELS = [
-    { id: 'beginner', label: 'Beginner', desc: 'Just starting my coding journey' },
-    { id: 'intermediate', label: 'Intermediate', desc: 'Can build basic projects' },
+    { id: 'beginner', label: 'Beginner', desc: 'Just starting to learn this subject' },
+    { id: 'intermediate', label: 'Intermediate', desc: 'Have some basic knowledge' },
     { id: 'advanced', label: 'Advanced', desc: 'Professional or highly experienced' },
 ]
 
 const INTEREST_OPTIONS = [
-    { id: 'frontend', label: 'Frontend', icon: <Laptop className="w-4 h-4" /> },
-    { id: 'backend', label: 'Backend', icon: <Database className="w-4 h-4" /> },
-    { id: 'fullstack', label: 'Full-Stack', icon: <Code className="w-4 h-4" /> },
-    { id: 'ai', label: 'AI & ML', icon: <BrainCircuit className="w-4 h-4" /> },
-    { id: 'design', label: 'UI/UX Design', icon: <Paintbrush className="w-4 h-4" /> },
-    { id: 'startup', label: 'Startups', icon: <Rocket className="w-4 h-4" /> },
+    { id: 'tech', label: 'Technology & IT', icon: <Laptop className="w-4 h-4" /> },
+    { id: 'business', label: 'Business & Finance', icon: <Database className="w-4 h-4" /> },
+    { id: 'design', label: 'Design & Arts', icon: <Paintbrush className="w-4 h-4" /> },
+    { id: 'science', label: 'Science & Math', icon: <BrainCircuit className="w-4 h-4" /> },
+    { id: 'languages', label: 'Languages', icon: <Code className="w-4 h-4" /> },
+    { id: 'personal', label: 'Personal Development', icon: <Rocket className="w-4 h-4" /> },
 ]
 
 export const Wizard = () => {
@@ -127,7 +127,7 @@ export const Wizard = () => {
                 {step === 2 && (
                     <div className="space-y-6 animate-in slide-in-from-right-4 fade-in duration-300">
                         <div>
-                            <h2 className="text-2xl font-semibold mb-2">What is your coding experience?</h2>
+                            <h2 className="text-2xl font-semibold mb-2">What is your experience level?</h2>
                             <p className="text-slate-500 dark:text-slate-400">This helps us recommend the right starting points.</p>
                         </div>
 

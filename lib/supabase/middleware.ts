@@ -59,6 +59,20 @@ export async function updateSession(request: NextRequest) {
                 return NextResponse.redirect(redirectUrl)
             }
         }
+    } else {
+        // User is NOT logged in
+        const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard') ||
+            request.nextUrl.pathname.startsWith('/courses') ||
+            request.nextUrl.pathname.startsWith('/messages') ||
+            request.nextUrl.pathname.startsWith('/social') ||
+            request.nextUrl.pathname.startsWith('/onboarding') ||
+            request.nextUrl.pathname.startsWith('/instructor')
+
+        if (isProtectedRoute) {
+            const redirectUrl = request.nextUrl.clone()
+            redirectUrl.pathname = '/auth/login'
+            return NextResponse.redirect(redirectUrl)
+        }
     }
 
     return supabaseResponse

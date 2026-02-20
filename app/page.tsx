@@ -21,7 +21,7 @@ export default function Home() {
           </div>
           <nav className="flex gap-6 text-sm font-medium">
             <a href="#features" className="hover:text-primary transition-colors">Features</a>
-            <a href="/courses" className="hover:text-primary transition-colors">Courses</a>
+            <a href="/search" className="hover:text-primary transition-colors">Courses</a>
             <a href="/auth/login" className="hover:text-primary transition-colors">Log in</a>
             <a href="/auth/register" className="px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">Get Started</a>
           </nav>
