@@ -62,14 +62,14 @@ DECLARE
     v_yesterday date := current_date - interval '1 day';
 BEGIN
     -- A) Mark lesson as completed
-    INSERT INTO public.lesson_progress (user_id, lesson_id, is_completed, completed_at)
+    INSERT INTO public.lesson_progress (user_id, lesson_id, completed, completed_at)
     VALUES (p_user, p_lesson, true, now())
-    ON CONFLICT (user_id, lesson_id) DO UPDATE SET is_completed = true, completed_at = now();
+    ON CONFLICT (user_id, lesson_id) DO UPDATE SET completed = true, completed_at = now();
 
     -- B) Update daily activity tracking
-    INSERT INTO public.daily_activity (user_id, date, lessons_completed, xp_earned)
+    INSERT INTO public.daily_activity (user_id, activity_date, lessons_completed, xp_earned)
     VALUES (p_user, v_today, 1, v_xp_reward)
-    ON CONFLICT (user_id, date) DO UPDATE 
+    ON CONFLICT (user_id, activity_date) DO UPDATE 
     SET lessons_completed = public.daily_activity.lessons_completed + 1,
         xp_earned = public.daily_activity.xp_earned + v_xp_reward;
 

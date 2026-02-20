@@ -22,7 +22,7 @@ import { createClient } from "@/lib/supabase/client"
 interface CourseActionsProps {
     course: {
         id: string
-        is_published: boolean
+        status: string
         title: string
     }
 }
@@ -32,18 +32,17 @@ export function CourseActions({ course }: CourseActionsProps) {
     const supabase = createClient()
     const [isLoading, setIsLoading] = useState(false)
 
+    const isPublished = course.status === 'published'
+
     const onPublish = async () => {
         try {
             setIsLoading(true)
 
-            if (course.is_published) {
-                await supabase.from('courses').update({ is_published: false }).eq('id', course.id)
+            if (isPublished) {
+                await supabase.from('courses').update({ status: 'draft' }).eq('id', course.id)
                 toast.success("Course unpublished")
             } else {
-                // In a real app, verify completion here
-                // const { data: sections } = ... check if sections exist
-
-                await supabase.from('courses').update({ is_published: true }).eq('id', course.id)
+                await supabase.from('courses').update({ status: 'published' }).eq('id', course.id)
                 toast.success("Course published")
             }
 
@@ -77,7 +76,7 @@ export function CourseActions({ course }: CourseActionsProps) {
                 variant="outline"
                 size="sm"
             >
-                {course.is_published ? "Unpublish" : "Publish"}
+                {isPublished ? "Unpublish" : "Publish"}
             </Button>
 
             <AlertDialog>

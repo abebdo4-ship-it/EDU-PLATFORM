@@ -23,19 +23,6 @@ export async function completeLesson(courseId: string, lessonId: string) {
         if (progressError) throw progressError
 
         // 2. Calculate new course progress
-        // Get total lessons in course
-        const { count: totalLessons } = await supabase
-            .from('lessons')
-            .select('id', { count: 'exact', head: true })
-            .eq('section_id', (
-                await supabase.from('sections').select('id').eq('course_id', courseId)
-            ).data?.map(s => s.id) // This approach is tricky in one query if we don't have direct course_id in lessons
-                // Better: Get sections first, then lessons in those sections? 
-                // Or if lessons has course_id? Let's check schema result again.
-                // Result said: lessons has section_id, not course_id.
-            )
-        // Actually, let's just count all lessons belonging to sections of this course.
-
         const { data: sections } = await supabase
             .from('sections')
             .select('id')
@@ -52,15 +39,17 @@ export async function completeLesson(courseId: string, lessonId: string) {
             .eq('is_published', true)
 
         // Get completed lessons count
-        // We need to find lesson_progress for lessons IN this course
-        // This is a join. 
-        // lesson_progress -> lessons -> sections -> course_id = X
         const { count: completedLessonsCount } = await supabase
             .from('lesson_progress')
-            .select('id, lessons!inner(section_id, sections!inner(course_id))', { count: 'exact', head: true })
+            .select('id', { count: 'exact', head: true })
             .eq('user_id', user.id)
             .eq('completed', true)
-            .eq('lessons.sections.course_id', courseId)
+            .in('lesson_id', (await supabase
+                .from('lessons')
+                .select('id')
+                .in('section_id', sectionIds)
+                .eq('is_published', true)
+            ).data?.map(l => l.id) || [])
 
         const progress = totalLessonsCount && totalLessonsCount > 0
             ? Math.round(((completedLessonsCount || 0) / totalLessonsCount) * 100)
@@ -72,9 +61,6 @@ export async function completeLesson(courseId: string, lessonId: string) {
             .update({
                 progress_percent: progress,
                 completed_at: progress === 100 ? new Date().toISOString() : null,
-                last_accessed_at: new Date().toISOString() // Assuming we want to track this? Schema didn't show it but it's good practice.
-                // Wait, schema check for enrollments: id, user_id, course_id, enrolled_at, progress_percent, completed_at
-                // No last_accessed_at. Okay, skip it.
             })
             .eq('user_id', user.id)
             .eq('course_id', courseId)

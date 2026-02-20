@@ -44,30 +44,20 @@ export async function generateCertificate(courseId: string) {
     if (!user) throw new Error("Unauthorized");
 
     // 1. Verify 100% Completion
-    // Calculate progress
-    // Get all published lessons
-    const { count: publishedChapters } = await supabase
-        .from("lessons")
-        .select("*", { count: 'exact', head: true })
-        .eq("course_id", courseId)
-        .eq("is_published", true);
+    // Get all sections for this course
+    const { data: sections } = await supabase
+        .from("sections")
+        .select("id")
+        .eq("course_id", courseId);
 
-    // Get completed lessons
-    const { count: completedChapters } = await supabase
-        .from("lesson_progress")
-        .select("*", { count: 'exact', head: true })
-        .eq("user_id", user.id)
-        .eq("is_completed", true)
-    // We need to filter by lessons belonging to this course... 
-    // This is tricky with simple query. 
-    // Alternative: Get course w/ lessons and user progress in one go.
+    const sectionIds = sections?.map(s => s.id) || [];
+    if (sectionIds.length === 0) throw new Error("Course has no sections");
 
-    // Let's refine the progress check to be robust.
-    // Fetch all lessons for the course
+    // Fetch all published lessons for the course via sections
     const { data: lessons } = await supabase
         .from("lessons")
         .select("id")
-        .eq("course_id", courseId)
+        .in("section_id", sectionIds)
         .eq("is_published", true);
 
     if (!lessons || lessons.length === 0) throw new Error("Course has no lessons");
@@ -78,7 +68,7 @@ export async function generateCertificate(courseId: string) {
         .from("lesson_progress")
         .select("id", { count: 'exact', head: true })
         .eq("user_id", user.id)
-        .eq("is_completed", true)
+        .eq("completed", true)
         .in("lesson_id", lessonIds);
 
     const progress = Math.round((completedCount || 0) / lessonIds.length * 100);

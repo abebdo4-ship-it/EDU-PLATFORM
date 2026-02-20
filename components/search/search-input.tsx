@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Search, X } from 'lucide-react'
-import { Input } from '@/components/ui/input'
 import { useCallback, useTransition } from 'react'
 
 export function SearchInput() {
@@ -32,22 +31,26 @@ export function SearchInput() {
     }
 
     return (
-        <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-                className="pl-9 pr-9"
-                placeholder="Search courses..."
-                defaultValue={searchParams.get('title') ?? ''}
-                onChange={handleSearch}
-            />
-            {searchParams.get('title') && (
-                <button
-                    onClick={handleClear}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                    <X className="h-4 w-4" />
-                </button>
-            )}
+        <div className="relative group">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 to-purple-500/30 rounded-full blur opacity-0 group-focus-within:opacity-100 transition duration-500" />
+
+            <div className="relative flex items-center">
+                <Search className="absolute left-4 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <input
+                    className="w-full pl-11 pr-10 py-2.5 rounded-full bg-background/50 backdrop-blur-md border border-border/50 focus:border-primary/50 outline-none text-sm placeholder:text-muted-foreground transition-all shadow-sm"
+                    placeholder="Search courses..."
+                    defaultValue={searchParams.get('title') ?? ''}
+                    onChange={handleSearch}
+                />
+                {searchParams.get('title') && (
+                    <button
+                        onClick={handleClear}
+                        className="absolute right-3 p-1 rounded-full text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+                )}
+            </div>
         </div>
     )
 }

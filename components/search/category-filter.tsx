@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion'
 
 interface CategoryFilterProps {
     categories: { id: string; name: string }[]
@@ -27,28 +28,49 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
             <button
                 onClick={() => handleClick(null)}
                 className={cn(
-                    'px-3 py-1.5 rounded-full text-sm font-medium border transition-colors',
+                    'relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 overflow-hidden',
                     !selectedId
-                        ? 'bg-primary text-primary-foreground border-primary'
-                        : 'bg-background hover:bg-muted border-input text-muted-foreground'
+                        ? 'text-white shadow-md'
+                        : 'bg-background/50 backdrop-blur-sm border border-border/50 text-muted-foreground hover:bg-muted/80'
                 )}
             >
-                All
+                {!selectedId && (
+                    <motion.div
+                        layoutId="activeCategory"
+                        className="absolute inset-0 bg-gradient-to-r from-primary to-purple-500 rounded-full"
+                        initial={false}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                )}
+                <span className="relative z-10">All Categories</span>
             </button>
-            {categories.map((cat) => (
-                <button
-                    key={cat.id}
-                    onClick={() => handleClick(cat.id)}
-                    className={cn(
-                        'px-3 py-1.5 rounded-full text-sm font-medium border transition-colors',
-                        selectedId === cat.id
-                            ? 'bg-primary text-primary-foreground border-primary'
-                            : 'bg-background hover:bg-muted border-input text-muted-foreground'
-                    )}
-                >
-                    {cat.name}
-                </button>
-            ))}
+
+            {categories.map((cat) => {
+                const isSelected = selectedId === cat.id;
+
+                return (
+                    <button
+                        key={cat.id}
+                        onClick={() => handleClick(cat.id)}
+                        className={cn(
+                            'relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 overflow-hidden',
+                            isSelected
+                                ? 'text-white shadow-md'
+                                : 'bg-background/50 backdrop-blur-sm border border-border/50 text-muted-foreground hover:bg-muted/80'
+                        )}
+                    >
+                        {isSelected && (
+                            <motion.div
+                                layoutId="activeCategory"
+                                className="absolute inset-0 bg-gradient-to-r from-primary to-purple-500 rounded-full"
+                                initial={false}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            />
+                        )}
+                        <span className="relative z-10">{cat.name}</span>
+                    </button>
+                )
+            })}
         </div>
     )
 }

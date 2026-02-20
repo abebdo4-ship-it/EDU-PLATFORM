@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createCheckoutSession } from "@/actions/stripe";
 import { enrollInCourse } from "@/actions/enroll-in-course";
@@ -21,17 +21,9 @@ export const EnrollButton = ({ courseId, price }: EnrollButtonProps) => {
         try {
             setIsLoading(true);
 
-            // We can't easily check auth client-side synchronously without a hook or context.
-            // But the server action will fail if not auth.
-            // Ideally we check if user is logged in to redirect to login.
-            // Let's assume server action throws "Unauthorized" and we catch it?
-            // Or better, let's just try.
-
             if (price && price > 0) {
-                // Stripe payment
                 await createCheckoutSession(courseId);
             } else {
-                // Free enrollment
                 try {
                     await enrollInCourse(courseId);
                     toast.success("Enrolled successfully");
@@ -54,14 +46,29 @@ export const EnrollButton = ({ courseId, price }: EnrollButtonProps) => {
     }
 
     return (
-        <Button
-            onClick={onClick}
-            disabled={isLoading}
-            size="lg"
-            className="w-full font-semibold text-lg hover:scale-105 transition-transform"
-        >
-            {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-            {price && price > 0 ? `Enroll for $${price}` : "Enroll for Free"}
-        </Button>
+        <div className="relative group">
+            {/* Animated gradient pulse ring */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary via-purple-500 to-primary rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500 animate-gradient-shift" />
+
+            <Button
+                onClick={onClick}
+                disabled={isLoading}
+                size="lg"
+                className="relative w-full h-14 rounded-xl font-bold text-lg bg-background text-foreground hover:bg-background border-2 border-primary/20 hover:border-primary/50 overflow-hidden transition-all shadow-xl"
+            >
+                {/* Sweeping shine effect */}
+                <div className="absolute inset-0 -translate-x-full group-hover:animate-shimmer bg-gradient-to-r from-transparent via-primary/10 to-transparent skew-x-12" />
+
+                {isLoading ? (
+                    <Loader2 className="h-5 w-5 mr-2 animate-spin text-primary" />
+                ) : (
+                    <Zap className="h-5 w-5 mr-2 text-primary group-hover:text-purple-500 transition-colors" />
+                )}
+
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500 group-hover:from-purple-500 group-hover:to-primary transition-all duration-500">
+                    {price && price > 0 ? `Enroll for $${price}` : "Enroll for Free"}
+                </span>
+            </Button>
+        </div>
     )
 }

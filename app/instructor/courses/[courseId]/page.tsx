@@ -3,7 +3,7 @@
 import { use } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowLeft, LayoutDashboard, ListChecks, CircleDollarSign, Settings } from "lucide-react"
+import { ArrowLeft, LayoutDashboard, ListChecks, CircleDollarSign, Settings, Star } from "lucide-react"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 
@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { CurriculumForm } from "@/components/instructor/course-editor/curriculum-form"
 import { CourseActions } from "@/components/instructor/course-editor/course-actions"
+import { CourseReviewsTab } from "@/components/instructor/course-editor/tabs/course-reviews-tab"
 // import { CourseDetailsForm } from "@/components/instructor/course-editor/course-details-form"
 // import { CoursePricingForm } from "@/components/instructor/course-editor/course-pricing-form"
 
@@ -58,7 +59,7 @@ export default function CourseEditorPage({ params }: CourseEditorProps) {
                     </Button>
                     <div>
                         <h1 className="text-2xl font-bold">{course.title}</h1>
-                        <span className="text-sm text-muted-foreground">{course.is_published ? "Published" : "Draft"}</span>
+                        <span className="text-sm text-muted-foreground capitalize">{course.status || "Draft"}</span>
                     </div>
                 </div>
                 <div className="flex gap-2">
@@ -67,21 +68,25 @@ export default function CourseEditorPage({ params }: CourseEditorProps) {
             </div>
 
             <Tabs defaultValue="curriculum" className="w-full space-y-6">
-                <TabsList className="grid w-full grid-cols-4 lg:w-[600px]">
+                <TabsList className="grid w-full grid-cols-5 lg:w-[750px] mb-8">
                     <TabsTrigger value="curriculum">
-                        <ListChecks className="mr-2 h-4 w-4" />
+                        <ListChecks className="mr-2 h-4 w-4 hidden sm:block" />
                         Curriculum
                     </TabsTrigger>
                     <TabsTrigger value="details">
-                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        <LayoutDashboard className="mr-2 h-4 w-4 hidden sm:block" />
                         Details
                     </TabsTrigger>
                     <TabsTrigger value="pricing">
-                        <CircleDollarSign className="mr-2 h-4 w-4" />
+                        <CircleDollarSign className="mr-2 h-4 w-4 hidden sm:block" />
                         Pricing
                     </TabsTrigger>
+                    <TabsTrigger value="reviews">
+                        <Star className="mr-2 h-4 w-4 hidden sm:block" />
+                        Reviews
+                    </TabsTrigger>
                     <TabsTrigger value="settings">
-                        <Settings className="mr-2 h-4 w-4" />
+                        <Settings className="mr-2 h-4 w-4 hidden sm:block" />
                         Settings
                     </TabsTrigger>
                 </TabsList>
@@ -94,8 +99,12 @@ export default function CourseEditorPage({ params }: CourseEditorProps) {
                     <div className="p-4 border rounded-md">Details Form Placeholder</div>
                 </TabsContent>
 
-                <TabsContent value="pricing">
+                <TabsContent value="pricing" className="mt-0">
                     <div className="p-4 border rounded-md">Pricing Form Placeholder</div>
+                </TabsContent>
+
+                <TabsContent value="reviews" className="mt-0">
+                    <CourseReviewsTab courseId={courseId} />
                 </TabsContent>
             </Tabs>
         </div>

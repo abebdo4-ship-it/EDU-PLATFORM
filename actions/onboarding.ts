@@ -3,6 +3,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { resend, defaultSender } from '@/lib/resend'
+import WelcomeEmail from '@/emails/WelcomeEmail'
 
 export async function submitOnboarding(data: {
     fullName: string,
@@ -41,12 +43,16 @@ export async function submitOnboarding(data: {
         throw new Error("Failed to save onboarding data")
     }
 
-    // Record welcome bonus in daily_activity
-    await supabase.from('daily_activity').insert({
-        user_id: user.id,
-        activity_date: new Date().toISOString().split('T')[0],
-        xp_earned: 100
-    })
+    // Record welcome bonus in daily_activity (non-blocking)
+    try {
+        await supabase.from('daily_activity').insert({
+            user_id: user.id,
+            activity_date: new Date().toISOString().split('T')[0],
+            xp_earned: 100
+        })
+    } catch (e) {
+        console.warn("Could not record welcome bonus:", e)
+    }
 
     // Set cookie to indicate onboarding is complete
     const cookieStore = await cookies()
@@ -54,6 +60,18 @@ export async function submitOnboarding(data: {
         maxAge: 60 * 60 * 24 * 365, // 1 year
         path: '/',
     })
+
+    // Send Welcome Email
+    try {
+        await resend.emails.send({
+            from: defaultSender,
+            to: user.email!,
+            subject: 'Welcome to Antigravity!',
+            react: WelcomeEmail({ userName: data.displayName || data.fullName })
+        })
+    } catch (e) {
+        console.warn("Failed to send welcome email:", e)
+    }
 
     redirect('/dashboard')
 }

@@ -7,6 +7,7 @@ import { AIAssistant } from "@/components/ai-assistant";
 import { getNotes } from "@/actions/notes";
 import { LessonViewer } from "@/components/course/lesson-viewer";
 import { LessonCompleteButton } from "@/components/course/lesson-complete-button";
+import { PageTransition } from "@/components/page-transition";
 
 export default async function LessonIdPage({
     params
@@ -109,7 +110,7 @@ export default async function LessonIdPage({
     }
 
     return (
-        <div className="flex flex-col max-w-7xl mx-auto pb-20">
+        <PageTransition className="flex flex-col max-w-[1400px] mx-auto pb-20 px-4 md:px-8 mt-6">
             <div className="p-4 w-full">
                 <LessonViewer
                     lesson={lesson}
@@ -145,6 +146,6 @@ export default async function LessonIdPage({
                 lessonTitle={lesson.title}
                 lessonDescription={lesson.description}
             />
-        </div>
+        </PageTransition>
     );
 }

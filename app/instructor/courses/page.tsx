@@ -91,8 +91,8 @@ export default function CoursesPage() {
                                         {course.price ? `$${course.price}` : <Badge variant="secondary">Free</Badge>}
                                     </TableCell>
                                     <TableCell>
-                                        <Badge variant={course.is_published ? "default" : "outline"}>
-                                            {course.is_published ? "Published" : "Draft"}
+                                        <Badge variant={course.status === 'published' ? "default" : "outline"}>
+                                            {course.status === 'published' ? "Published" : course.status === 'archived' ? "Archived" : "Draft"}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>

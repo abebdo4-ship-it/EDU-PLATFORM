@@ -55,8 +55,7 @@ export default function CreateCoursePage() {
                 .insert({
                     title: values.title,
                     instructor_id: user.id,
-                    slug: values.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, ''),
-                    is_published: false
+                    status: 'draft'
                 })
                 .select()
                 .single()

@@ -14,7 +14,7 @@ export async function getNotes(lessonId: string) {
         .select("*")
         .eq("lesson_id", lessonId)
         .eq("user_id", user.id) // Redundant with RLS but good for filtering efficiency
-        .order("timestamp", { ascending: true })
+        .order("video_timestamp", { ascending: true })
         .order("created_at", { ascending: false });
 
     return data || [];
@@ -32,7 +32,7 @@ export async function createNote(lessonId: string, content: string, timestamp: n
             user_id: user.id,
             lesson_id: lessonId,
             content,
-            timestamp: Math.floor(timestamp)
+            video_timestamp: Math.floor(timestamp)
         });
 
     if (error) throw error;

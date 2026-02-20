@@ -13,7 +13,16 @@ export async function enrollInCourse(courseId: string) {
         throw new Error('Unauthorized')
     }
 
-    // verify course is free
+    // Check if user is Pro
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('is_pro')
+        .eq('id', user.id)
+        .single()
+
+    const isPro = profile?.is_pro
+
+    // verify course is free (or user is pro)
     const { data: course } = await supabase
         .from('courses')
         .select('price')
@@ -21,7 +30,11 @@ export async function enrollInCourse(courseId: string) {
         .single()
 
     if (!course) throw new Error('Course not found')
-    if (course.price && course.price > 0) throw new Error('Course is not free')
+
+    // Only block if course is paid AND user is not Pro
+    if (course.price && course.price > 0 && !isPro) {
+        throw new Error('Course requires purchase or Pro subscription')
+    }
 
     const { error } = await supabase
         .from('enrollments')

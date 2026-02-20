@@ -9,7 +9,7 @@ export async function getAnalytics(userId: string) {
     const { data: courses } = await supabase
         .from("courses")
         .select("id, title, price")
-        .eq("user_id", userId);
+        .eq("instructor_id", userId);
 
     if (!courses || courses.length === 0) {
         return {
